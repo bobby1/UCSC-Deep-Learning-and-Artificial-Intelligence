@@ -1,0 +1,52 @@
+docker run -t --rm -p 8501:8501 -v "c:/Users/b1/Downloads/models/bert_model:/models/bert_model" -e MODEL_NAME=bert_model tensorflow/serving &
+
+
+2023-05-27 02:17:32.180041: I tensorflow_serving/model_servers/server.cc:74] Building single TensorFlow model file config:  model_name: bert_model model_base_path: /models/bert_model
+2023-05-27 02:17:32.181005: I tensorflow_serving/model_servers/server_core.cc:465] Adding/updating models.
+2023-05-27 02:17:32.181097: I tensorflow_serving/model_servers/server_core.cc:594]  (Re-)adding model: bert_model
+2023-05-27 02:17:32.696992: I tensorflow_serving/core/basic_manager.cc:739] Successfully reserved resources to load servable {name: bert_model version: 2}
+2023-05-27 02:17:32.697160: I tensorflow_serving/core/loader_harness.cc:66] Approving load for servable version {name: bert_model version: 2}
+2023-05-27 02:17:32.697255: I tensorflow_serving/core/loader_harness.cc:74] Loading servable version {name: bert_model version: 2}
+2023-05-27 02:17:32.791739: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:45] Reading SavedModel from: /models/bert_model/2
+2023-05-27 02:17:33.611857: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:89] Reading meta graph with tags { serve }
+2023-05-27 02:17:33.611964: I external/org_tensorflow/tensorflow/cc/saved_model/reader.cc:130] Reading SavedModel debug info (if present) from: /models/bert_model/2
+2023-05-27 02:17:33.614653: I external/org_tensorflow/tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-05-27 02:17:35.238280: I external/org_tensorflow/tensorflow/compiler/mlir/mlir_graph_optimization_pass.cc:353] MLIR V1 optimization pass is not enabled
+2023-05-27 02:17:35.660012: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:231] Restoring SavedModel bundle.
+2023-05-27 02:17:39.427893: W external/org_tensorflow/tensorflow/tsl/framework/cpu_allocator_impl.cc:83] Allocation of 93763584 exceeds 10% of free system memory.
+2023-05-27 02:17:47.521713: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:215] Running initialization op on SavedModel bundle at path: /models/bert_model/2
+2023-05-27 02:17:49.443187: I external/org_tensorflow/tensorflow/cc/saved_model/loader.cc:314] SavedModel load for tags { serve }; Status: success: OK. Took 16651520 microseconds.
+2023-05-27 02:17:49.537402: I tensorflow_serving/servables/tensorflow/saved_model_warmup_util.cc:62] No warmup data file found at /models/bert_model/2/assets.extra/tf_serving_warmup_requests
+2023-05-27 02:17:49.908237: I tensorflow_serving/core/loader_harness.cc:95] Successfully loaded servable version {name: bert_model version: 2}
+2023-05-27 02:17:49.912244: I tensorflow_serving/model_servers/server_core.cc:486] Finished adding/updating models
+2023-05-27 02:17:49.912391: I tensorflow_serving/model_servers/server.cc:118] Using InsecureServerCredentials
+2023-05-27 02:17:49.912436: I tensorflow_serving/model_servers/server.cc:383] Profiler service is enabled
+2023-05-27 02:17:49.914002: I tensorflow_serving/model_servers/server.cc:409] Running gRPC ModelServer at 0.0.0.0:8500 ...
+[warn] getaddrinfo: address family for nodename not supported
+[evhttp_server.cc : 245] NET_LOG: Entering the event loop ...
+2023-05-27 02:17:49.921413: I tensorflow_serving/model_servers/server.cc:430] Exporting HTTP/REST API at:localhost:8501 ...
+
+ docker ps -a |grep tensor
+c31dc3914b73   tensorflow/serving                    "/usr/bin/tf_serving…"   12 minutes ago       Up 12 minutes               8500/tcp, 0.0.0.0:8501->8501/tcp                                                                                                       nifty_wescoff
+
+curl  -X POST http://localhost:8501/v1/models/bert_model:predict
+{
+    "error": "JSON Parse error: The document is empty"
+}
+
+http://localhost:8501/v1/models/bert_model
+{
+ "model_version_status": [
+  {
+   "version": "2",
+   "state": "AVAILABLE",
+   "status": {
+    "error_code": "OK",
+    "error_message": ""
+   }
+  }
+ ]
+}
+
+
